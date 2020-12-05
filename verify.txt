@@ -1,0 +1,35 @@
+<?php
+
+    session_start();
+    
+    $captcha = $_GET["captcha"];
+    $actual = $_SESSION["captcha"];
+    $ucid = $_GET["ucid"];
+    $amount = $_GET["amount"];
+
+    $delay = $_GET["delay"];
+    $_SESSION["delay"]=$delay;
+
+    $msc = $_GET["msc"];
+
+    if($captcha == $actual){
+        echo "<center><b>The captcha entered was correct! </b></center><br>";
+        header ("refresh:$delay, authForm.php");
+        exit();
+    }
+
+    else{
+        echo "<center><b>The captcha entered was incorrect!</b></center> <br>";
+        header ("refresh:$delay, auth.html");
+        exit();
+    }
+
+?>
+
+<style>
+    form     { margin: auto; border: 3px solid brown; padding: 20px; width: 500px; background-color: beige; font-family: Georgia, serif;}
+    body {
+        margin: auto; background: beige; font-family: Georgia, serif; font-size: 16px;   
+    } 
+
+</style>

@@ -1,0 +1,65 @@
+<?php
+
+session_set_cookie_params(0, "/~rjs83/download/ASSIGNMENT_2/");
+
+session_start();
+$session_value = session_id();
+
+header("Content-Type: image/png");
+
+$font = "LaBelleAurore.ttf";
+$font2 = "Oswald-Regular.ttf";
+$font3 = "Xoxoxa.ttf";
+
+$im = imagecreatetruecolor(550,350);
+$blue = imagecolorallocate($im, 0, 0, 255);
+$yellow = imagecolorallocate($im, 215, 215, 0);
+$red = imagecolorallocate($im, 255, 0, 0);
+$green = imagecolorallocate($im, 0, 255, 0);
+$black = imagecolorallocate($im, 0, 0, 0);
+
+imagefilledrectangle($im, 0, 0, 550, 350, $blue);
+imagefilledrectangle($im, 20, 20, 530,330, $yellow);
+
+imageline($im, 50, 0, 100, 150, $blue);
+imageline($im, 100, 10, 120, 180, $blue);
+imageline($im, 90, 60, 150, 200, $blue);
+imageline($im, 120, 75, 200, 210, $blue);
+
+function makeSendCaptcha($length, $font){
+    global $im, $black;
+    $text = substr(str_shuffle(md5((time()))), 0, $length);
+    imagettftext($im, 30, 0, 125, 150, $black, $font, $text);
+    return $text;
+}
+$text = makeSendCaptcha(2, $font);
+$_SESSION["msc"]=$text;
+
+function randLetter(){
+    $integer = rand(0,51);
+    $a_z = "abcdefghjklmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ123456789";
+    $rand_letter = $a_z[$integer];
+    return $rand_letter;
+}
+
+$length1 = 2;
+$length2 = 2;
+
+$text1 = randLetter().randLetter().randLetter().randLetter();
+$text2 = substr (str_shuffle (md5 (time())), 0, $length2 );
+$text3 = "session id: " . $session_value;
+
+$_SESSION["captcha"] = $text1.$text2;
+$_SESSION["ucid"] = $ucid;
+
+$text4 = "captcha: $text1$text2";
+
+imagettftext($im, 32, 50, 120, 240, $red, $font3, $text1);
+imagettftext($im, 30, -30, 200, 200, $green, $font3, $text2);
+imagettftext($im, 20, 0, 30, 280, $black, $font2, $text3);
+imagettftext($im, 20, 0, 30, 310, $black, $font2, $text4);
+
+imagepng($im);
+imagedestroy($im);
+
+?>

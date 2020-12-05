@@ -1,0 +1,86 @@
+<?php
+    
+    function authenticate($ucid, $pass){ //checks if the input is valid
+	
+        global $db;
+        $s = "select * from users where ucid = '$ucid' ";
+        **********echo "SQL is $s<br>";
+        
+       ($trans = mysqli_query($db, $s)) or die ( mysqli_error($db));
+
+       $r = mysqli_fetch_array($trans, MYSQLI_ASSOC);
+       $hash = $r['hash'];
+
+        $num   = mysqli_num_rows($trans);
+        if ($num == 0 )			{ return false; }
+        else					{ 
+            
+            $_SESSION["ucid"] = $ucid;
+            $_SESSION['logged'] = true;
+
+            if(password_verify($pass, $hash)){
+                return true;
+            }
+            else{
+                return false;
+            } 
+        }
+    }    
+
+    function safe($fieldname){
+        global $flag;
+    
+        $v = $_GET[$fieldname];
+        $v = trim($v);
+        
+        if($fieldname == "ucid"){
+            $count = preg_match('/^[a-z]{2,6}([0-9]{2,4})?$/', $v, $matches);
+    
+            if($count == 0){
+                $flag = false;
+                echo "Your ucid is not valid.<br><br>";
+            }
+            else{
+                echo "Your ucid is valid.<br><br>";
+                return $v;
+            }
+        }
+    
+        if($fieldname == "amount"){
+            $count = preg_match('/^[+-]?(\d{1,})?(\.\d{1,})?$/', $v, $matches);
+    
+            if($count == 0){
+                $flag = false;
+                echo "Your amount is not valid.<br><br>";
+            }
+            else{
+                echo "Your amount is valid.<br><br>";
+                return $v;
+            }
+        }
+
+        if($fieldname == "pass"){
+            $count = preg_match('/^(\d{1,})?([*]{1,})?(\d{1,})?(\?{1,})?(\d{1,})?$/', $v, $matches);
+    
+            if($count == 0){
+                $flag = false;
+                echo "Your pass is not valid.<br><br>";
+            }
+            else{
+                echo "Your pass is valid.<br><br>";
+                return $v;
+            }
+        }
+
+    }
+    
+?>
+
+<style>
+    form     { margin: auto; font-family: Georgia, serif;}
+    body {
+        background: beige; 
+		margin: auto; background: beige; font-family: Georgia, serif; font-size: 16px; 
+    } 
+
+</style>

@@ -1,0 +1,21 @@
+<img src="captcha.php"><br><br>
+
+<form action = "verify.php">
+
+    <h1><center>Welcome to NJIT Banking System</center></h1>
+
+    <input type = text name = "captcha"> What is the captcha text <br>
+    <input type = text name = "delay"> Preferred amount of delay <br>
+    <input type = submit>
+
+</form>
+
+<style> 
+    body {
+
+        background-image: url("NjitBack.jpg");
+    } 
+
+    form     {margin: auto; border: 3px solid brown; padding: 20px; width: 500px; background-color: beige; font-family: Georgia, serif; font-weight: bold; font-size: 14px; }
+
+</style>
